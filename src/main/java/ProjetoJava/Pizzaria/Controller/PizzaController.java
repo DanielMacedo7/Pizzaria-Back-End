@@ -51,9 +51,9 @@ public class PizzaController {
                 System.out.println("Preço: " + pizza.getPrice());
 
                 // Atualiza os campos da pizza com base nos dados recebidos na requisição
-                pizza.setTitle(pizza.getTitle());
-                pizza.setImage(pizza.getImage());
-                pizza.setPrice(pizza.getPrice());
+                pizza.setTitle(pizzaRequest.title());
+                pizza.setImage(pizzaRequest.image());
+                pizza.setPrice(pizzaRequest.price());
 
                 // Salva a pizza atualizada no banco de dados
                 Pizza pizzaresp = repository.save(pizza);

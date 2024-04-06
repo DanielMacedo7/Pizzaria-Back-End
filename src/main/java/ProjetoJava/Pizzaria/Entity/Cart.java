@@ -1,6 +1,7 @@
 package ProjetoJava.Pizzaria.Entity;
 
 import ProjetoJava.Pizzaria.Dto.Request.CartRequestDto;
+import ProjetoJava.Pizzaria.Entity.Enum.CartEnum;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -18,7 +19,7 @@ public class Cart {
     private Pizza pizza;
 
     @Column(nullable = false)
-    private Timestamp status;
+    private CartEnum cartEnum;
 
     @Column(nullable = false)
     private String address;
@@ -33,7 +34,7 @@ public class Cart {
     public Cart(CartRequestDto Request) {
         this.id = Request.id();
         this.pizza = Request.pizza();
-        this.status = Request.status();
+        this.cartEnum = Request.cartEnum();
         this.address = Request.address();
     }
 
@@ -53,12 +54,12 @@ public class Cart {
         this.pizza = pizza;
     }
 
-    public Timestamp getStatus() {
-        return status;
+    public CartEnum getCartEnum() {
+        return cartEnum;
     }
 
-    public void setStatus(Timestamp status) {
-        this.status = status;
+    public void setCartEnum(CartEnum cartEnum) {
+        this.cartEnum = cartEnum;
     }
 
     public String getAddress() {
@@ -69,4 +70,6 @@ public class Cart {
         this.address = address;
     }
 
+    public void addPizza(Pizza pizza) {
+    }
 }
