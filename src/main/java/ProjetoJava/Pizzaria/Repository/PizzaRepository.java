@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface PizzaRepository extends JpaRepository<Pizza, Long> {
 
+
 }

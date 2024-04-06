@@ -1,13 +1,12 @@
 package ProjetoJava.Pizzaria.Entity;
 
+import ProjetoJava.Pizzaria.Dto.Request.CartRequestDto;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "tb_cart")
+@Table(name = "cart")
 public class Cart {
 
     @Id
@@ -24,13 +23,18 @@ public class Cart {
     @Column(nullable = false)
     private String address;
 
-    public Cart(){}
 
-    public Cart(Long id, Pizza pizza, Timestamp status, String address) {
-        this.id = id;
-        this.pizza = pizza;
-        this.status = status;
-        this.address = address;
+    public Cart(){
+
+    }
+
+    //quando utilizamos um record precisamos passar para nosso, construtor da classe
+    //o request que será enviado no post.
+    public Cart(CartRequestDto Request) {
+        this.id = Request.id();
+        this.pizza = Request.pizza();
+        this.status = Request.status();
+        this.address = Request.address();
     }
 
     public Long getId() {

@@ -1,9 +1,10 @@
 package ProjetoJava.Pizzaria.Entity;
 
+import ProjetoJava.Pizzaria.Dto.Request.PizzaRequestDto;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tb_pizza")
+@Table(name = "pizza")
 public class Pizza {
 
     @Id
@@ -13,7 +14,7 @@ public class Pizza {
     @Column(length = 50, nullable = false)
     private String title;
 
-    @Column(length = 180, nullable = false)
+    @Column(length = 350, nullable = false)
     private String image;
 
     @Column(nullable = false)
@@ -22,11 +23,11 @@ public class Pizza {
 
     public Pizza(){}
 
-    public Pizza(Long id, String title, String image, int price) {
-        this.id = id;
-        this.title = title;
-        this.image = image;
-        this.price = price;
+    public Pizza(PizzaRequestDto Request) {
+        this.id = Request.id();
+        this.title = Request.title();
+        this.image = Request.image();
+        this.price = Request.price();
 
     }
 
