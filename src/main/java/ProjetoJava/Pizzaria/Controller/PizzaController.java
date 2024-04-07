@@ -44,12 +44,6 @@ public class PizzaController {
             if (pizzaOptional.isPresent()) {
                 Pizza pizza = pizzaOptional.get();
 
-                // Logs para verificar os valores recebidos
-                System.out.println("Dados recebidos para atualização:");
-                System.out.println("Nome: " + pizza.getTitle());
-                System.out.println("imagem: " + pizza.getImage());
-                System.out.println("Preço: " + pizza.getPrice());
-
                 // Atualiza os campos da pizza com base nos dados recebidos na requisição
                 pizza.setTitle(pizzaRequest.title());
                 pizza.setImage(pizzaRequest.image());
