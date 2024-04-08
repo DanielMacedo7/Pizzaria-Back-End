@@ -1,6 +1,7 @@
 package ProjetoJava.Pizzaria.Controller;
 
 import ProjetoJava.Pizzaria.Dto.Request.UserRequestDto;
+import ProjetoJava.Pizzaria.Dto.Response.UserResponseDto;
 import ProjetoJava.Pizzaria.Entity.Pizza;
 import ProjetoJava.Pizzaria.Entity.User;
 import ProjetoJava.Pizzaria.Repository.UserRepository;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -34,7 +36,7 @@ public class UserController {
     }
 
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id,
                                        @RequestBody UserRequestDto Request) {
         try {
@@ -66,15 +68,35 @@ public class UserController {
 
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> remove(@PathVariable Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> remove(@PathVariable Long id) {
+        try {
+           Optional<User> userOptional = userRepository.findById(id);
+           if (userOptional.isPresent()) {
+               userRepository.deleteById(id);
+               return ResponseEntity.ok().build();
 
-        }
+           } else {
+               return ResponseEntity.notFound().build();
+           }
+       }catch(Exception e){
+           e.printStackTrace();//logs para debug
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();//retorna erro http
+       }
 
     }
 
+    @GetMapping
+    public ResponseEntity<List<UserResponseDto>> getAll(){
+        try{
+            List<UserResponseDto> userList = userRepository.findAll().stream()
+                    .map(UserResponseDto::new).toList();
+            return ResponseEntity.ok(userList);
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 
 
