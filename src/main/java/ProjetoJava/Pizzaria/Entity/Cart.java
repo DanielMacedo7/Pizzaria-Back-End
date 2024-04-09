@@ -18,7 +18,8 @@ public class Cart {
     @JoinColumn(name = "pizza_id", referencedColumnName = "id")
     private Pizza pizza;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "CartEnum", nullable = false)
     private CartEnum cartEnum;
 
     @Column(nullable = false)

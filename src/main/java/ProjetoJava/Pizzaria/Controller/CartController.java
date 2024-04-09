@@ -1,5 +1,7 @@
 package ProjetoJava.Pizzaria.Controller;
 
+import ProjetoJava.Pizzaria.Dto.Request.CartRequestDto;
+import ProjetoJava.Pizzaria.Dto.Request.PizzaRequestDto;
 import ProjetoJava.Pizzaria.Dto.Response.CartResponseDto;
 import ProjetoJava.Pizzaria.Entity.Cart;
 import ProjetoJava.Pizzaria.Entity.Pizza;
@@ -25,43 +27,37 @@ public class CartController {
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @PostMapping("/addPizza")
-    public ResponseEntity<Void> addPizzaToCart(@RequestParam Long pizzaId){
+    @PostMapping
+    public ResponseEntity<Void> save(@RequestBody CartRequestDto request) {
         try {
-            // Verificar se o carrinho já existe no banco de dados
-            Optional<Cart> cartOptional = cartRepository.findById(1L); // Supondo que o ID do carrinho é 1
+            // Encontra a pizza com o ID fornecido
+            Pizza pizza = pizzaRepository.findById(request.pizza().getId())
+                    .orElseThrow(() -> new RuntimeException("ID da pizza não encontrado, verifique-o"));
 
-            if (cartOptional.isPresent()) {
-                Cart cart = cartOptional.get();
 
-                // Buscar a pizza pelo ID
-                Optional<Pizza> pizzaOptional = pizzaRepository.findById(pizzaId);
 
-                if (pizzaOptional.isPresent()) {
-                    Pizza pizza = pizzaOptional.get();
-
-                    // Adicionar a pizza ao carrinho
-                    cart.addPizza(pizza);
-
-                    // Salvar o carrinho atualizado no banco de dados
-                    cartRepository.save(cart);
-
-                    System.out.println("Pizza adicionada ao carrinho com sucesso.");
-
-                    return ResponseEntity.ok().build();
-                } else {
-                    System.out.println("Pizza não encontrada com o ID: " + pizzaId);
-                    return ResponseEntity.notFound().build();
-                }
+            if (pizza != null) {
+                // Cria um novo carrinho com base na solicitação fornecida
+                Cart cart = new Cart(request);
+                // Define a pizza no carrinho
+                cart.setPizza(pizza);
+                cart.setCartEnum(request.cartEnum());
+                cart.setAddress(request.address());
+                // Salva o carrinho no repositório
+                cartRepository.save(cart);
+                // Retorna um status 200 OK se tudo ocorreu bem
+                return ResponseEntity.ok().build();
             } else {
-                System.out.println("Carrinho não encontrado com o ID: 1"); // Se o carrinho com ID 1 não existir
+                // Retorna um status 404 Not Found se a pizza não foi encontrada
                 return ResponseEntity.notFound().build();
             }
+
         } catch (Exception e) {
-            e.printStackTrace();  // Adicione logs para debug
+            // Retorna um status 500 Internal Server Error se ocorrer uma exceção
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 
 
